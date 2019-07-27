@@ -1,0 +1,6 @@
+# Project exclude paths
+/venv/
+/build/
+/dist/
+/wli.egg-info/
+.idea
