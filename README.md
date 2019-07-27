@@ -3,7 +3,7 @@ We Leak Info Command Line Utility
 ### Installation
 
 
-Run `git@github.com:BraveLittleRoaster/wlicli.git`
+Run `git clone git@github.com:BraveLittleRoaster/wlicli.git`
 
 Next, install with `python3 setup.py install`
 
