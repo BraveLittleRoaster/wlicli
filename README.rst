@@ -20,6 +20,8 @@ the ``--use-public`` command.
 Usage
 #####
 
+[![asciicast](https://asciinema.org/a/14.png)](https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz)
+
 optional arguments:
   -h, --help            show this help message and exit
   -q QUERY, --query QUERY
