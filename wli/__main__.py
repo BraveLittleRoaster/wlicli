@@ -62,6 +62,7 @@ class WLIApi:
         self.__comboList = kwargs.get('combo_list')
         self.__userList = kwargs.get('user_list')
         self.__passList = kwargs.get('pass_list')
+        self.__hashList = kwargs.get('hash_list')
         self.__crackHash = kwargs.get('crack')
         self.__csv = kwargs.get('csv')
         self.__json = kwargs.get('json')
@@ -340,8 +341,8 @@ class WLIApi:
         return chunks
 
     def pub_search(self):
-        # Not implemented yet.
-        pass
+        logging.error("Public API searches are not yet implemented!")
+        sys.exit(1)
 
     def crack_hashes(self):
         """
@@ -454,6 +455,25 @@ class WLIApi:
         # Dump results to json file.
         with open(self.__json, 'wb') as f:
             f.write(json.dumps(self.__all_res, indent=4, sort_keys=True, ensure_ascii=False).encode('utf-8'))
+
+    def hash_dump(self):
+        # Dump hashes and salts to file for offline cracking or processing.
+        hashes = set()
+        for result in self.__all_res.get("Data"):
+
+            hash = result.get("Hash")
+            salt = result.get("Salt")
+
+            if hash:
+                # We must have at least a hash. Just salts are not useful.
+                if salt:
+                    hashes.add(f"{hash}:{salt}")
+                else:
+                    hashes.add(hash)
+        logging.info(f"Found {len(hashes)} hashes in all results, dumping these to {self.__hashList}")
+        with open(self.__hashList, 'wb') as f:
+            for hash in hashes:
+                f.write(f"{hash}\n".encode('utf-8'))
 
     def combo_dump(self):
         # Dump all the combo lists.
@@ -617,7 +637,11 @@ if __name__ == "wli.__main__":
     urllib3_log.setLevel(logging.WARNING)
     # Init WLI API instance with options.
     wli = WLIApi(verbose=args.verbose, combo_list=args.combo_list, user_list=args.user_list, pass_list=args.pass_list,
-                 crack=args.crack, csv=args.csv, json=args.json, limit=args.limit, showKeys=args.dont_show_keys)
+                 crack=args.crack, csv=args.csv, json=args.json, limit=args.limit, showKeys=args.dont_show_keys,
+                 hash_list=args.hash_dump)
+
+    if args.use_public:
+        wli.pub_search()
 
     if args.init_key:
         wli.init_key(args.init_key, args.key_type)
@@ -628,7 +652,7 @@ if __name__ == "wli.__main__":
         logging.error("You can't specify both query and query-list. Use one or the other.")
         sys.exit(1)
 
-    if args.query or args.query_list and args.type:
+    if (args.query or args.query_list) and args.type:
         # Do search
         wli.read_apikey()  # load the API keys.
         if args.query_list:
@@ -683,8 +707,11 @@ if __name__ == "wli.__main__":
                              f"containing {results.get('Datatypes')}")
 
         logging.info("Now performing hash cracking or dump options, if specified.")
+        if args.hash_dump:
+            wli.hash_dump()
         if args.crack:
             wli.crack_hashes()
+        # We dump these after running hash cracks, because we will end up updating the combo list.
         if args.combo_list or args.user_list or args.pass_list:
             wli.combo_dump()
         if args.csv:

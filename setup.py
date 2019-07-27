@@ -1,7 +1,7 @@
 from setuptools import setup
 
 DEPENDENCIES = open('requirements.txt', 'r').read().split('\n')
-README = open('README.rst', 'r').read()
+README = open('README.md', 'r').read()
 
 setup(
     name='wli',
