@@ -369,7 +369,6 @@ class WLIApi:
             logging.info("Adding decrypted hashes to combo lists.")
             p = Pool()
             p.map(self.hash_to_combo, self.__all_res.get("Data"))
-            p.join()
             p.close()
 
     def hash_to_combo(self, result):
