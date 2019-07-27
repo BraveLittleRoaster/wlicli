@@ -134,24 +134,27 @@ class WLIApi:
         priv_key_file = f"{self.__profile_path}/WLI_PRIV_KEY"
         pub_key_file = f"{self.__profile_path}/WLI_PUB_KEY"
 
-        if os.path.exists(priv_key_file):
-
+        try:
             with open(priv_key_file, 'r') as fpriv:
                 priv_key = fpriv.read()
                 if not self.__showKeys:
                     logging.debug(f"Using private API key: {priv_key}")
-        if os.path.exists(pub_key_file):
+        except (FileNotFoundError, PermissionError) as err:
+            logging.warning(f"Could not access private API key. ERR: {err}")
+        try:
             with open(pub_key_file, 'r') as fpub:
                 pub_key = fpub.read()
                 if not self.__showKeys:
                     logging.debug(f"Using public API key: {pub_key}")
+        except (FileNotFoundError, PermissionError) as err:
+            logging.warning(f"Could not access public API key. ERR: {err}")
 
         self.__apiPrivKey = priv_key
         self.__apiPubKey = pub_key
 
         if not (priv_key or pub_key):
-            logging.error("Could not find API key in environment variable. Please install the API key via --init-key "
-                          "or by using a command like 'export WLI_PRIV_KEY=<api_key>'")
+            logging.error("Could not find API keys!. Please install the API key via --init-key. "
+                          "See --help for more information")
             sys.exit(1)
 
         return {"priv_key": priv_key, "pub_key": pub_key}
@@ -168,6 +171,9 @@ class WLIApi:
         :param regex: Toggle a regex search.
         :return: Total number of results and the type of data found.
         """
+        if not self.__apiPrivKey:
+            logging.error("You need a private API key to perform this search!")
+            sys.exit(1)
         self.__headers["Authorization"] = f"Bearer {self.__apiPrivKey}"  # Set the API key to private.
         url = f"{self.__priv_url}/search"
         data = self.__formData
@@ -574,9 +580,12 @@ if __name__ == "wli.__main__":
     output_group.add_argument("-p", "--pass-list", action="store",
                               help="Store a file of all unique passwords to the file specified.")
     output_group.add_argument("--csv", action="store", help="Dump all results to CSV file at specified location.")
-    output_group.add_argument("--json", action="store", help="Dump all results to JSON file at specified location")
+    output_group.add_argument("--json", action="store", help="Dump all results to JSON file at specified location.")
+    output_group.add_argument("--hash-dump", action="store",
+                              help="Dump all the hashes and salts to the file at specified location.")
     output_group.add_argument("-v", "--verbose", action="store_true", default=False,
                               help="Enable verbose-mode output.")
+
     # Define API Key options
     api_group = parser.add_argument_group("API Key options")
     api_group.add_argument("--init-key", action="store", type=acceptable_api_key,

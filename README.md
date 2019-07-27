@@ -1,27 +1,28 @@
 We Leak Info Command Line Utility
 =================================
-Installation
-############
+### Installation
 
-Run ``git@github.com:BraveLittleRoaster/wlicli.git``
 
-Next, install with ``python3 setup.py install``
+Run `git@github.com:BraveLittleRoaster/wlicli.git`
+
+Next, install with `python3 setup.py install`
 
 Then initialize your key. You can get your key by visiting: https://weleakinfo.com/api/overview
 Click the button to generate your Public Key and Private Key.
 
-Now you can initialize them like so: ``wli --init-key <private_api_key> --key-type private``
+Now you can initialize them like so: `wli --init-key <private_api_key> --key-type private`
 
-If you have a public api key instead of private, you can initialize that with: ``wli --init-key <public_api_key> --key-type public``
+If you have a public api key instead of private, you can initialize that with: `wli --init-key <public_api_key> --key-type public`
 
-If you have both keys installed, it will always default to using the ``private API`` search, but you can override this with
-the ``--use-public`` command.
+If you have both keys installed, it will always default to using the `private API` search, but you can override this with
+the `--use-public` command.
 
-Usage
-#####
+
+### Usage
+
 
 <a href="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz" target="_blank"><img src="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz.svg" /></a>
-
+```
 optional arguments:
   -h, --help            show this help message and exit
   -q QUERY, --query QUERY
@@ -66,3 +67,26 @@ API Key options:
                         the Public API instead.
   --dont-show-keys      Don't display API keys to STDOUT when using verbose
                         mode.
+```
+
+#### --query-list
+
+The `--query-list` param will automatically determine regular searches and wild-card searches, however, you have to
+specify within the input file on each line that requires a regex search using the `regex:` tag. For example, you have an input file, `input_list.txt` that looks like this:
+
+```
+john.doe@yahoo.com
+john.doe@*.*
+regex:^[^\s]{4}$\.doe\@(.*)\.com
+jane.doe@*.com
+```
+
+Lines 2 and 4 will be performed as wildcard search, while line 3 will be a regex, and line 1 a normal search.
+
+#### --crack
+
+Because of We Leak Info's rate limit, the `--crack` option will take a long time to run. Depneding on the size of each 
+search and the number of hashes found, it can take hours to run. The best approach is to run the other dumps you need 
+first, then rerun the search with the `--crack` command, and output all your dumps to a different file. This will give 
+you time to analyze and import the plaintext credentials into tools like Metasploit and NMap, while waiting on the hash
+cracker to finish. You can also export all the hashes with `--hash-dump` for offline cracking.
