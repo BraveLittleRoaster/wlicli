@@ -20,7 +20,7 @@ the ``--use-public`` command.
 Usage
 #####
 
-<script id="asciicast-xND07dxs7FP2hNasVgEnGxHcz" src="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz.js" async></script>
+<a href="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz" target="_blank"><img src="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz.svg" /></a>
 
 optional arguments:
   -h, --help            show this help message and exit
