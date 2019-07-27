@@ -23,6 +23,8 @@ the `--use-public` command.
 
 <a href="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz" target="_blank"><img src="https://asciinema.org/a/xND07dxs7FP2hNasVgEnGxHcz.svg" /></a>
 ```
+https://weleakinfo.com/ CLI Tool
+
 optional arguments:
   -h, --help            show this help message and exit
   -q QUERY, --query QUERY
@@ -55,7 +57,10 @@ Output options:
                         Store a file of all unique passwords to the file
                         specified.
   --csv CSV             Dump all results to CSV file at specified location.
-  --json JSON           Dump all results to JSON file at specified location
+  --json JSON           Dump all results to JSON file at specified location.
+  --hash-dump HASH_DUMP
+                        Dump all the hashes and salts to the file at specified
+                        location.
   -v, --verbose         Enable verbose-mode output.
 
 API Key options:
@@ -67,6 +72,7 @@ API Key options:
                         the Public API instead.
   --dont-show-keys      Don't display API keys to STDOUT when using verbose
                         mode.
+
 ```
 
 #### --query-list
