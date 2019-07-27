@@ -8,7 +8,7 @@ setup(
     version='1.0.0',
     description='Python library and CLI for We Leak Info (https://weleakinfo.com/)',
     long_description=README,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     author='HexOffender',
     author_email='HexOffender_1337@protonmail.com',
     url="http://github.com/hexoffender/wli-python/tree/master",
