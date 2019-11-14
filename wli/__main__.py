@@ -541,7 +541,7 @@ def acceptable_query_type(type):
     acceptable_values = [
         'username',
         'email',
-        'password'
+        'password',
         'hash',
         'ip',
         'name',
