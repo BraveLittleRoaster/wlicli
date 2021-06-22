@@ -1,3 +1,6 @@
+*Making this public now. RIP in pieces WeLeakInfo, you made pentesting easymode.*
+
+
 We Leak Info Command Line Utility
 =================================
 ### Installation
